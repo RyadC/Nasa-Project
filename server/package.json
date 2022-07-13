@@ -4,20 +4,32 @@
   "description": "nasa mission control API",
   "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test-watch": "jest --watch",
     "watch": "nodemon src/server.js",
-    "start": "set PORT=5000&&  node src/server.js"
+    "start": "set PORT=5000&&  node src/server.js",
+    "cluster": "pm2 start src/server.js"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "detectOpenHandles": true
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.27.2",
     "cors": "^2.8.5",
     "csv-parse": "^5.0.4",
+    "dotenv": "^16.0.1",
     "express": "^4.17.3",
-    "nasa-project": "file:.."
+    "nasa-project": "file:..",
+    "pino": "^7.11.0",
+    "pm2": "^5.2.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.2"
   }
 }
