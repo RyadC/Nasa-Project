@@ -1,0 +1,32 @@
+# Le nom de mon workflow
+name: NASA Project CI
+# Ce déclenche lorsque:
+on:
+  # Il y a un push sur le dépôt distant
+  push:
+    # Sur la branche main
+    branches: [ main ]
+  # Ou lors d'un pull
+  pull_request:
+    # Sur la branche main
+    branches: [ main ]
+  # Les tâches à effectuer
+  jobs:
+    # Faire un buil
+    build:
+      #  Qui doit s'exécuter que sur ubuntu
+      runs-on: ubuntu-latest
+      # Les étapes sont:
+      steps:
+        # Déclencher le code suivant (ce code est mis à disposition sur github, je lui demande d'aller chercher cela sur github et de l'exécuter)
+        - uses: actions/checkout@v2
+        # Déclencher le code suivant que j'ai regrouper et donné un nom
+        - name: Use Node.js version 16
+          uses: actions/setup-node@v2
+          # Je précise que cela doit se faire avec qqchose à prendre en considération
+          with:
+            # Il s'agit de la version 16 de node
+            node-version: '16'
+        # Je lui dit de faire des actions personnalisées dont exécuter les deux commande npm configuré dans mon package.json
+        - run: npm install
+        - run: npm run build --prefix client
