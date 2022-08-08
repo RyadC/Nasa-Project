@@ -10,23 +10,44 @@ on:
   pull_request:
     # Sur la branche main
     branches: [ main ]
-  # Les tâches à effectuer
+# Les tâches à effectuer
 jobs:
   # Faire un buil
   build:
+    # L'environnement sur lequel s'exécute les tests
+    env:
+      # L'environnement est ici l'intégration continue
+      CI: true
+    # La stratégie de cet environnement
+      MONGO_URL: mongodb://localhost/nasa
+    strategy:
+      # Le contexte
+      matrix:
+        # On veut effectuer ces tests sur les versions de node spécifiées
+        node-version: [14.x, 16.x]
+        # Puis sur les versions de MongoDB spécifiées
+        mongodb-version: ['4.4']        
     #  Qui doit s'exécuter que sur ubuntu
     runs-on: ubuntu-latest
-    # Les étapes sont:
+    # Les étapes de mes tests d'intégration sont:
     steps:
-      # Déclencher le code suivant (ce code est mis à disposition sur github, je lui demande d'aller chercher cela sur github et de l'exécuter)
+      # Déclencher les actions suivantes (ces actions qui sont des morceaux de code sont mis à disposition sur github, je lui demande d'aller chercher cela sur github et de l'exécuter). Chaque uses est une action à faire
+      # Permet d'extraire le référentiel github afin de pouvoir y effectuer les tests
       - uses: actions/checkout@v2
       # Déclencher le code suivant que j'ai regrouper et donné un nom
-      - name: Use Node.js version 16
+      # - name: Use Node.js version 16
+      # Je mets en variable les versions de node spécifiées en stratégie
+      - name: Use Node.js version ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         # Je précise que cela doit se faire avec qqchose à prendre en considération
         with:
-          # Il s'agit de la version 16 de node
-          node-version: '16'
+          # Il s'agit des versions spécifiées en stratégie, je mets ma variable
+          node-version: ${{ matrix.node-version }}
+      # Lancer un serveur Mongo pour effectuer nos tests
+      - name: Use MongoDB from GitHub actions
+        uses: supercharge/mongodb-github-action@1.7.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
       # Je lui dit de faire des actions personnalisées dont exécuter les deux commande npm configuré dans mon package.json
       - run: npm install
       - run: npm run build --prefix client

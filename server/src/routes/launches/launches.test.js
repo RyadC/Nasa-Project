@@ -3,6 +3,7 @@ const request = require('supertest');
 
 // Importer notre application
 const app = require('../../app');
+const { loadPlanetsData } = require('../../models/planets.model');
 const mongoService = require('../../services/mongo');
 
 // VARIABLES
@@ -11,6 +12,7 @@ const URL_LAUNCHES = '/v1/launches';
 describe('Launches tests', () => {
   beforeAll(async () => {
     await mongoService.mongoConnect();
+    await loadPlanetsData();
   });
 
   afterAll(async () => {
