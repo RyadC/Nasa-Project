@@ -25,7 +25,8 @@
     "express": "^4.17.3",
     "nasa-project": "file:..",
     "pino": "^7.11.0",
-    "pm2": "^5.2.0"
+    "pm2": "^5.2.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "jest": "^27.5.1",
